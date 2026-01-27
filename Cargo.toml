@@ -1,0 +1,15 @@
+[package]
+name = "rich"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+arboard = "3.4"
+markdown = "1.0.0-alpha.18"
+
+[profile.release]
+opt-level = "z"     # Optimize for size
+lto = true          # Link-time optimization
+codegen-units = 1   # Single codegen unit for better optimization
+panic = "abort"     # Abort on panic (smaller than unwinding)
+strip = true        # Strip symbols
