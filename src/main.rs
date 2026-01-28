@@ -1,5 +1,5 @@
 use arboard::Clipboard;
-use markdown::to_html;
+use pulldown_cmark::{html, Options, Parser};
 
 fn main() {
     let mut clipboard = Clipboard::new().expect("Failed to open clipboard");
@@ -13,9 +13,14 @@ fn main() {
         }
     };
 
-    // 2. Convert Markdown to HTML
-    // We use 'to_html' with default options
-    let html_output = to_html(&md_input);
+    // 2. Convert Markdown to HTML with table support
+    let mut options = Options::empty();
+    options.insert(Options::ENABLE_TABLES);
+    options.insert(Options::ENABLE_STRIKETHROUGH);
+    
+    let parser = Parser::new_ext(&md_input, options);
+    let mut html_output = String::new();
+    html::push_html(&mut html_output, parser);
 
     // 3. Set the clipboard as HTML
     // This function tells the OS "This is formatted text"
