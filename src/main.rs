@@ -1,15 +1,24 @@
 use arboard::Clipboard;
 use pulldown_cmark::{html, Options, Parser};
+use std::io::{self, IsTerminal, Read};
 
 fn main() {
     let mut clipboard = Clipboard::new().expect("Failed to open clipboard");
 
-    // 1. Read the current clipboard text (Markdown)
-    let md_input = match clipboard.get_text() {
-        Ok(text) => text,
-        Err(_) => {
-            println!("Clipboard is empty or doesn't contain text.");
-            return;
+    // 1. Read Markdown from STDIN if piped, otherwise from clipboard
+    let md_input = if !io::stdin().is_terminal() {
+        let mut buffer = String::new();
+        io::stdin()
+            .read_to_string(&mut buffer)
+            .expect("Failed to read from STDIN");
+        buffer
+    } else {
+        match clipboard.get_text() {
+            Ok(text) => text,
+            Err(_) => {
+                println!("Clipboard is empty or doesn't contain text.");
+                return;
+            }
         }
     };
 

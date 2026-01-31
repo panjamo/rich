@@ -1,8 +1,10 @@
 # rich
 
-A CLI tool that converts Markdown text in your clipboard to rich text (HTML).
+A CLI tool that converts Markdown text to rich text (HTML) and places it on your clipboard.
 
 ## Usage
+
+### From Clipboard
 
 1. Copy Markdown text to your clipboard
 2. Run `rich`
@@ -11,6 +13,21 @@ A CLI tool that converts Markdown text in your clipboard to rich text (HTML).
 ```bash
 rich
 ```
+
+### From STDIN
+
+Pipe Markdown content directly into the tool:
+
+```bash
+echo "# Hello World" | rich
+
+cat README.md | rich
+
+# Convert and paste a file's content as rich text
+cat notes.md | rich
+```
+
+The converted rich text is placed on your clipboard, ready to paste.
 
 ## Installation
 
